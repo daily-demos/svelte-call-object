@@ -23,7 +23,6 @@ export async function post() {
 			body: JSON.stringify(options)
 		});
 		if (res.ok) {
-			console.log(res);
 			const room = await res.json();
 			return {
 				status: 200,

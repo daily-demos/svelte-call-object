@@ -9,7 +9,7 @@
 		});
 		const data = await submit.json();
 
-		if (data.success) {
+		if (data.success && data?.room?.name) {
 			goto(`/room/${data.room.name}`);
 		} else if (data.status === '200') {
 			errorMessage = `bad request`;
@@ -20,5 +20,7 @@
 	}
 </script>
 
-<button on:click={submitForm}> Create room </button>
+<form on:submit|preventDefault={submitForm}>
+	<input type="submit" value="Create room" />
+</form>
 <p>{errorMessage}</p>

@@ -31,8 +31,15 @@
 
 	h1 {
 		text-align: center;
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 0;
 	}
 	p {
 		text-align: center;
+	}
+	.subtext {
+		font-size: 12px;
+		color: var(--dark-grey);
 	}
 </style>

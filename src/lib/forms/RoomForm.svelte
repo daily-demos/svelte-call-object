@@ -26,13 +26,27 @@
 	<input id="name" type="text" bind:value={dailyName} />
 	<label for="url">Daily URL (leave empty to create a new room)</label>
 	<input id="url" type="text" bind:value={dailyUrl} />
-	<input type="submit" value="Create room" disabled={!dailyUrl} />
+	<input type="submit" value="Start demo" disabled={!dailyUrl} />
 </form>
 <p>{errorMessage}</p>
 
 <style>
+	form {
+		width: 300px;
+	}
 	label,
 	input {
 		display: block;
+	}
+	input {
+		width: 100%;
+	}
+	input[type='submit'] {
+		margin: 1rem auto 0;
+		width: 100px;
+		font-size: 12px;
+	}
+	input[type='submit']:not(:disabled) {
+		background-color: var(--turquoise);
 	}
 </style>

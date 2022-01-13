@@ -1,10 +1,46 @@
 <script>
+	import { username } from '../../store.js';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	let dailyUrl = '';
 	let dailyName = '';
 	let errorMessage = '';
 
+	onMount(() => {
+		/**
+		 * Use name and url from local storage to pre-populate form
+		 * when available.
+		 */
+		const storedUrl = localStorage?.getItem('DAILY_SVELTE_URL');
+		if (storedUrl) {
+			dailyUrl = storedUrl;
+		}
+		const storedName = localStorage?.getItem('DAILY_SVELTE_NAME');
+		if (storedName) {
+			dailyName = storedName;
+		}
+	});
+
 	async function submitForm() {
+		// Set Daily name in store for future use
+		username.set(dailyName);
+		localStorage?.setItem('DAILY_SVELTE_NAME', dailyName);
+
+		/**
+		 * If a Daily URL has been included, use it.
+		 * (We're trusting it's valid at this point!)
+		 */
+		if (dailyUrl) {
+			localStorage?.setItem('DAILY_SVELTE_URL', dailyUrl);
+			const roomName = dailyUrl.split('/').at(-1);
+			goto(`/room/${roomName}`);
+			return;
+		}
+
+		/**
+		 * If there isn't a Daily URL, we can create a new
+		 * room with a random name
+		 */
 		const submit = await fetch('/room.json', {
 			method: 'POST'
 		});
@@ -23,10 +59,10 @@
 
 <form on:submit|preventDefault={submitForm}>
 	<label for="name">Your name</label>
-	<input id="name" type="text" bind:value={dailyName} />
+	<input id="name" type="text" bind:value={dailyName} required />
 	<label for="url">Daily URL (leave empty to create a new room)</label>
 	<input id="url" type="text" bind:value={dailyUrl} />
-	<input type="submit" value="Start demo" disabled={!dailyUrl} />
+	<input type="submit" value={!dailyUrl ? 'Create room' : 'Join call'} />
 </form>
 <p>{errorMessage}</p>
 
@@ -45,8 +81,7 @@
 		margin: 1rem auto 0;
 		width: 100px;
 		font-size: 12px;
-	}
-	input[type='submit']:not(:disabled) {
 		background-color: var(--turquoise);
+		font-weight: 700;
 	}
 </style>

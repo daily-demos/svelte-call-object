@@ -7,13 +7,17 @@
 </script>
 
 <svelte:head>
-	<title>Daily demo</title>
+	<title>Daily Svelte demo</title>
 </svelte:head>
 
 <section>
-	<h1>Daily demo</h1>
+	<h1>Call object Svelte demo</h1>
+	<p>Demo a custom call interface built using Daily call object for Svelte.</p>
 
 	<RoomForm />
+	<p class="subtext">
+		Select "Allow" in the browser device prompt to use your camera and mic for this call.
+	</p>
 </section>
 
 <style>
@@ -26,6 +30,9 @@
 	}
 
 	h1 {
-		width: 100%;
+		text-align: center;
+	}
+	p {
+		text-align: center;
 	}
 </style>

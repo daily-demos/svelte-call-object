@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
-
+	let dailyUrl = '';
+	let dailyName = '';
 	let errorMessage = '';
 
 	async function submitForm() {
@@ -21,6 +22,17 @@
 </script>
 
 <form on:submit|preventDefault={submitForm}>
-	<input type="submit" value="Create room" />
+	<label for="name">Your name</label>
+	<input id="name" type="text" bind:value={dailyName} />
+	<label for="url">Daily URL (leave empty to create a new room)</label>
+	<input id="url" type="text" bind:value={dailyUrl} />
+	<input type="submit" value="Create room" disabled={!dailyUrl} />
 </form>
 <p>{errorMessage}</p>
+
+<style>
+	label,
+	input {
+		display: block;
+	}
+</style>

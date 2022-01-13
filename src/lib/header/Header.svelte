@@ -35,7 +35,7 @@
 		border-bottom: 1px solid var(--grey);
 	}
 	.wrapper {
-		max-width: 1200px;
+		max-width: 1024px;
 		display: flex;
 		justify-content: space-between;
 		margin: 0 auto;

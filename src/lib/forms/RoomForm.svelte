@@ -83,5 +83,6 @@
 		font-size: 12px;
 		background-color: var(--turquoise);
 		font-weight: 700;
+		cursor: pointer;
 	}
 </style>

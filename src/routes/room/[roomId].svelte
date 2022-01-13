@@ -1,15 +1,18 @@
 <script>
-	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import daily from '@daily-co/daily-js';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
+	import VideoTile from '$lib/call/VideoTile.svelte';
+	import { callObject } from '../../store';
 
-	let callObject = null;
+	let participants = [];
+	let co;
 
 	const goHome = () => {
-		if (callObject) {
-			callObject.destroy();
+		if (co) {
+			co.destroy();
 		}
 		goto(`/`);
 		// TODO: handle destroying callframe if currently in call
@@ -19,8 +22,16 @@
 	 * DAILY EVENT CALLBACKS
 	 */
 
-	const handleJoiningMeeting = () => {};
-	const updateParticpants = () => {};
+	const handleJoiningMeeting = () => {
+		console.log('[joined-meeting]', e);
+		if (!co) return;
+		participants = Object.values(co.participants());
+	};
+	const updateParticpants = (e) => {
+		console.log('[update participants]', e);
+		if (!co) return;
+		participants = Object.values(co.participants());
+	};
 	const handleError = () => {};
 	const handleDeviceError = () => {};
 	const updateMessages = () => {};
@@ -37,9 +48,9 @@
 		}
 		const url = `https://${domain}.daily.co/${roomName}`;
 		// Create instance of Daily call object
-		const co = daily.createCallObject({ url });
-		// Assign in data obj for future reference
-		callObject = co;
+		co = daily.createCallObject({ url });
+		// Assign in store for future reference
+		callObject.set(co);
 
 		// Join the call with the name set in the Home.vue form
 		co.join();
@@ -69,13 +80,25 @@
 	<title>Daily call</title>
 </svelte:head>
 
-<button on:click={goHome}>Go back</button>
-<div class="content">in call view</div>
+<div>
+	<button on:click={goHome}>Go back</button>
+</div>
+<div class="call-container">
+	<h2>hi</h2>
+	{#each participants as participant}
+		<VideoTile {participant} />
+	{/each}
+</div>
 
 <style>
-	.content {
-		width: 100%;
-		max-width: var(--column-width);
-		margin: var(--column-margin-top) auto 0 auto;
+	button {
+		border: 1px solid var(--grey);
+		border-radius: 8px;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+		background-color: var(--white);
+		cursor: pointer;
 	}
 </style>

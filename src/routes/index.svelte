@@ -15,9 +15,7 @@
 	<p>Demo a custom call interface built using Daily call object for Svelte.</p>
 
 	<RoomForm />
-	<p class="subtext">
-		Select "Allow" in the browser device prompt to use your camera and mic for this call.
-	</p>
+	<p class="subtext">If prompted, select "Allow" to use your camera and mic for this call</p>
 </section>
 
 <style>

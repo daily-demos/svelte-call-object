@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Controls from './Controls.svelte';
 
 	export let participant;
 	let videoSrc;
@@ -31,4 +32,11 @@
 	{:else}
 		<p>video off</p>
 	{/if}
+	<Controls />
 </div>
+
+<style>
+	.video-tile {
+		position: relative;
+	}
+</style>

@@ -5,8 +5,9 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
 	import VideoTile from '$lib/call/VideoTile.svelte';
-	import { callObject } from '../../store';
+	import { callObject, chatHistory } from '../../store';
 	import WaitingForOthersTile from '../../lib/call/WaitingForOthersTile.svelte';
+	import Chat from '../../lib/call/Chat.svelte';
 
 	let participants = [];
 	let co;
@@ -47,8 +48,13 @@
 		console.error('Error: ending call and returning to home page');
 		await goHome();
 	};
-	const handleDeviceError = () => {};
-	const updateMessages = () => {};
+	const handleDeviceError = () => {
+		// TODO: device permissions
+	};
+	const handleAppMessage = (e) => {
+		// add chat message to message history
+		$chatHistory = [...$chatHistory, e?.data];
+	};
 	/**
 	 * END - DAILY EVENT CALLBACKS
 	 */
@@ -77,7 +83,8 @@
 			.on('participant-left', updateParticpants)
 			.on('error', handleError)
 			// camera-error = device permissions issue
-			.on('camera-error', handleDeviceError);
+			.on('camera-error', handleDeviceError)
+			.on('app-message', handleAppMessage);
 
 		// Assign in store for future reference
 		callObject.set(call);
@@ -113,6 +120,7 @@
 	{#if participants?.length === 1}
 		<WaitingForOthersTile />
 	{/if}
+	<Chat />
 </div>
 
 <style>

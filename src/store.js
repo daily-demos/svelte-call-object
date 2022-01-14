@@ -5,3 +5,4 @@ import { writable } from 'svelte/store';
 export const username = writable('Guest');
 // Use Daily's call object to interact with the Daily API
 export const callObject = writable(null);
+export let chatHistory = writable([]);

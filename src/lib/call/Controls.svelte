@@ -1,11 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { callObject } from '../../store';
-	import camOnIcon from './vid_on.svg';
-	import camOffIcon from './vid_off.svg';
-	import micOnIcon from './mic_on.svg';
-	import micOffIcon from './mic_off.svg';
-	import screenIcon from './screen.svg';
+	import camOnIcon from './assets/vid_on.svg';
+	import camOffIcon from './assets/vid_off.svg';
+	import micOnIcon from './assets/mic_on.svg';
+	import micOffIcon from './assets/mic_off.svg';
+	import screenIcon from './assets/screen.svg';
+	import leaveIcon from './assets/leave_call.svg';
 	import { onMount } from 'svelte';
 
 	let co;
@@ -60,10 +61,13 @@
 		>
 		<button on:click={toggleScreenShare}><img src={screenIcon} alt="Toggle screen share" /></button>
 	</div>
-	<button on:click={leaveCall}> leave</button>
+	<button class="leave" on:click={leaveCall}><img src={leaveIcon} alt="Leave call" /></button>
 </div>
 
 <style>
+	img {
+		height: 24px;
+	}
 	.controls-container {
 		position: absolute;
 		bottom: 12px;
@@ -71,6 +75,7 @@
 		justify-content: space-between;
 		display: flex;
 		width: calc(100% - 16px);
+		z-index: 20;
 	}
 	.devices {
 		border-radius: 12px;
@@ -82,5 +87,11 @@
 		background-color: transparent;
 		border: none;
 		cursor: pointer;
+	}
+	button.leave {
+		background-color: var(--red);
+		opacity: 0.85;
+		padding: 14px 16px 15px;
+		border-radius: 12px;
 	}
 </style>

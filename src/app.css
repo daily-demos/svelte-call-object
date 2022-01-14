@@ -8,8 +8,9 @@
 	--grey: #c8d1dc;
 	--dark-grey: #6b7785;
 	--dark-blue: #1f2d3d;
-	--dark-blue-border: #2b3f56;
+	--blue: #2b3f56;
 	--green: #72cc18;
+	--red: #f63135;
 	--red-dark: #bb0c0c;
 	--turquoise: #1bebb9;
 	--column-width: 42rem;
@@ -22,6 +23,10 @@ body {
 	background-color: var(--grey-lightest);
 }
 
+body.in-call {
+	background-color: var(--dark-blue);
+}
+
 body::before {
 	content: '';
 	width: 80vw;
@@ -30,7 +35,6 @@ body::before {
 	top: 0;
 	left: 10vw;
 	z-index: -1;
-	background-color: var(--grey-lightest);
 	opacity: 0.05;
 }
 

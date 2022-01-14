@@ -1,8 +1,8 @@
 <script>
-	import logo from './logo.svg';
-	import svelteLogo from './svelte-logo.svg';
-	import githubLogo from './github.svg';
-	import newTab from './newtab.svg';
+	import logo from './assets/logo.svg';
+	import svelteLogo from './assets/svelte-logo.svg';
+	import githubLogo from './assets/github.svg';
+	import newTab from './assets/newtab.svg';
 </script>
 
 <header>

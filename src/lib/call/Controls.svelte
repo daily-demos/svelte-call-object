@@ -11,8 +11,6 @@
 
 	let camOn = false;
 	let micOn = false;
-	// TODO: check if screenshare is supported co.supportedBrowser?.()?.supportsScreenShare;
-	let showScreenShareButton = true;
 
 	onMount(() => {
 		if ($callObject) return;
@@ -35,8 +33,16 @@
 	};
 	const toggleScreenShare = () => {
 		if (!$callObject) return;
-		// TODO: toggle screen share via button
-		const currentAudio = $callObject.startScreenShare();
+		// TODO: check if screenshare is supported co.supportedBrowser?.()?.supportsScreenShare;
+
+		const isScreenSharing = Object.values($callObject.participants()).filter(
+			(p) => p?.screen && p?.local
+		);
+		if (isScreenSharing?.length) {
+			$callObject.stopScreenShare();
+		} else {
+			$callObject.startScreenShare();
+		}
 	};
 	const leaveCall = async () => {
 		if (!$callObject) return;

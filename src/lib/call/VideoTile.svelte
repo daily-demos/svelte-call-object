@@ -13,6 +13,7 @@
 	 * https://github.com/sveltejs/svelte/issues/3492#issuecomment-583794947)
 	 */
 	function srcObject(node, stream) {
+		console.log(node, stream);
 		node.srcObject = stream;
 		return {
 			update(newStream) {
@@ -26,7 +27,7 @@
 	onMount(() => {
 		const videoTrack = participant?.tracks?.video?.persistentTrack;
 		videoSrc = new MediaStream([videoTrack]);
-		const audioTrack = participant?.tracks?.video?.persistentTrack;
+		const audioTrack = participant?.tracks?.audio?.persistentTrack;
 		audioSrc = new MediaStream([audioTrack]);
 	});
 </script>
@@ -45,6 +46,14 @@
 			<track kind="captions" />
 		</audio>
 	{/if}
+
+	<!-- Add audio icon when video is on for remote participants -->
+	{#if participant?.video && !participant?.local}
+		<span class="audio-icon">
+			<img src={participant?.audio ? micOnIcon : micOffIcon} alt="Toggle local audio" />
+		</span>
+	{/if}
+
 	<!-- Add placeholder view when video is off with the participant's name -->
 	{#if !participant?.video}
 		<div class="video-placeholder">
@@ -86,5 +95,10 @@
 	}
 	.name {
 		margin-right: 0.75rem;
+	}
+	.audio-icon {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
 	}
 </style>

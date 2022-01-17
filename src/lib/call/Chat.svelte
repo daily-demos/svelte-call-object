@@ -6,27 +6,17 @@
 	import close from './assets/x.svg';
 	import send from './assets/send.svg';
 
-	let messages;
-	let co;
 	let newText = '';
 	let chatIsOpen = false;
 
-	chatHistory.subscribe((value) => {
-		console.log(value);
-		messages = value;
-	});
-	callObject.subscribe((value) => {
-		co = value;
-	});
-
-	const sendMessage = (e) => {
-		if (!co) return;
-		const local = co.participants().local.user_name || 'Guest';
+	const sendMessage = () => {
+		if (!$callObject) return;
+		const local = $callObject.participants().local.user_name || 'Guest';
 		const newMessage = {
 			name: local,
 			text: newText
 		};
-		co.sendAppMessage(newMessage);
+		$callObject.sendAppMessage(newMessage);
 		/**
 		 * Update chat history in store for the local user.
 		 * (Participants do not receive Daily app-message events for

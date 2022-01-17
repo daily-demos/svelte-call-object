@@ -9,44 +9,40 @@
 	import leaveIcon from './assets/leave_call.svg';
 	import { onMount } from 'svelte';
 
-	let co;
 	let camOn = false;
 	let micOn = false;
 	// TODO: check if screenshare is supported co.supportedBrowser?.()?.supportsScreenShare;
 	let showScreenShareButton = true;
 
 	onMount(() => {
-		if (!co) return;
+		if ($callObject) return;
 
-		camOn = co.localVideo();
-		micOn = co.localAudio();
-	});
-
-	callObject.subscribe((value) => {
-		co = value;
+		camOn = $callObject.localVideo();
+		micOn = $callObject.localAudio();
 	});
 
 	const toggleVideo = () => {
-		if (!co) return;
-		const currentVid = co.localVideo();
+		if (!$callObject) return;
+		const currentVid = $callObject.localVideo();
 		camOn = !currentVid;
-		co.setLocalVideo(!currentVid);
+		$callObject.setLocalVideo(!currentVid);
 	};
 	const toggleAudio = () => {
-		if (!co) return;
-		const currentAudio = co.localAudio();
+		if (!$callObject) return;
+		const currentAudio = $callObject.localAudio();
 		micOn = !currentAudio;
-		co.setLocalAudio(!currentAudio);
+		$callObject.setLocalAudio(!currentAudio);
 	};
 	const toggleScreenShare = () => {
-		if (!co) return;
+		if (!$callObject) return;
 		// TODO: toggle screen share via button
-		const currentAudio = co.startScreenShare();
+		const currentAudio = $callObject.startScreenShare();
 	};
 	const leaveCall = async () => {
-		if (!co) return;
-		await co.leave();
-		co.destroy();
+		if (!$callObject) return;
+		await $callObject.leave();
+		await $callObject.destroy();
+		document?.body?.classList?.remove('in-call');
 		goto(`/`);
 	};
 </script>
@@ -56,9 +52,9 @@
 		<button on:click={toggleVideo}>
 			<img src={camOn ? camOnIcon : camOffIcon} alt="Toggle local video" />
 		</button>
-		<button on:click={toggleAudio}
-			><img src={micOn ? micOnIcon : micOffIcon} alt="Toggle local audio" /></button
-		>
+		<button on:click={toggleAudio}>
+			<img src={micOn ? micOnIcon : micOffIcon} alt="Toggle local audio" />
+		</button>
 		<button on:click={toggleScreenShare}><img src={screenIcon} alt="Toggle screen share" /></button>
 	</div>
 	<button class="leave" on:click={leaveCall}><img src={leaveIcon} alt="Leave call" /></button>

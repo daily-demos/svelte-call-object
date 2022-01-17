@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import Controls from './Controls.svelte';
+	import micOnIcon from './assets/mic_on.svg';
+	import micOffIcon from './assets/mic_off.svg';
 
 	export let participant;
 	let videoSrc;
@@ -45,7 +47,10 @@
 	{/if}
 	<!-- Add placeholder view when video is off with the participant's name -->
 	{#if !participant?.video}
-		<div class="video-placeholder">video off</div>
+		<div class="video-placeholder">
+			<span class="name">{participant?.user_name || 'Guest'}</span>
+			<img src={participant?.audio ? micOnIcon : micOffIcon} alt="Toggle local audio" />
+		</div>
 	{/if}
 	<!-- Display device controls for the local user -->
 	{#if participant?.local}
@@ -74,5 +79,12 @@
 		border-radius: 8px;
 		background-color: var(--blue);
 		z-index: 10;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: var(--white);
+	}
+	.name {
+		margin-right: 0.75rem;
 	}
 </style>

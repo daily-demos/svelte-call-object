@@ -1,5 +1,5 @@
 <script>
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import daily from '@daily-co/daily-js';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -27,6 +27,7 @@
 
 	const goHome = async () => {
 		await destroyCall();
+		document?.body?.classList?.remove('in-call');
 		goto(`/`);
 	};
 
@@ -96,12 +97,8 @@
 		}
 
 		// updates background colour
-		document?.body?.classList?.add('in-call');
-	});
-	onDestroy(() => {
-		// resets background colour
 		if (document) {
-			document?.body?.classList?.remove('in-call');
+			document?.body?.classList?.add('in-call');
 		}
 	});
 </script>

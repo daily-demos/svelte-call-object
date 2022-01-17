@@ -31,7 +31,7 @@
 	header {
 		width: 100vw;
 		background-color: var(--white);
-		padding: 0.5rem;
+		padding: 0.5rem 0;
 		border-bottom: 1px solid var(--grey);
 	}
 	.wrapper {
@@ -76,6 +76,7 @@
 	}
 	.corner.right .plain-link img {
 		margin-left: 1rem;
+		margin-right: 1rem;
 		padding-left: 1rem;
 		border-left: 1px solid var(--grey);
 	}

@@ -11,7 +11,6 @@
 <style>
 	.waiting-tile {
 		position: relative;
-		max-width: 50%;
 		flex: 1 1 350px;
 		margin: 10px 20px;
 		position: relative;

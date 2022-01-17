@@ -9,15 +9,15 @@
 	import leaveIcon from './assets/leave_call.svg';
 	import { onMount } from 'svelte';
 
-	let camOn = false;
-	let micOn = false;
+	$: camOn = $callObject?.localVideo();
+	$: micOn = $callObject?.localAudio();
 
-	onMount(() => {
-		if ($callObject) return;
+	// onMount(() => {
+	// 	if ($callObject) return;
 
-		camOn = $callObject.localVideo();
-		micOn = $callObject.localAudio();
-	});
+	// 	camOn = $callObject.localVideo();
+	// 	micOn = $callObject.localAudio();
+	// });
 
 	const toggleVideo = () => {
 		if (!$callObject) return;

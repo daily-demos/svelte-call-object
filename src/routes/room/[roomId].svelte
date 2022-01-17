@@ -8,18 +8,15 @@
 	import { callObject, chatHistory } from '../../store';
 	import WaitingForOthersTile from '../../lib/call/WaitingForOthersTile.svelte';
 	import Chat from '../../lib/call/Chat.svelte';
+	import Loading from '../../lib/call/Loading.svelte';
 
 	let participants = [];
-	let co;
-
-	callObject.subscribe((value) => {
-		co = value;
-	});
+	let loading = true;
 
 	const destroyCall = async () => {
-		if (co) {
-			await co.leave();
-			await co.destroy();
+		if ($callObject) {
+			await $callObject.leave();
+			await $callObject.destroy();
 			return;
 		}
 		return;
@@ -31,19 +28,28 @@
 		goto(`/`);
 	};
 
+	const confirmedParticipants = (e) => {
+		const particpantArr = Object.values($callObject.participants());
+		return particpantArr.map((p) =>
+			p?.session_id === e?.participant?.session_id ? e?.participant : p
+		);
+	};
+
 	/**
 	 * DAILY EVENT CALLBACKS
 	 */
 
-	const handleJoiningMeeting = (e) => {
+	const handleJoinedMeeting = (e) => {
 		console.log('[joined-meeting]', e);
-		if (!co) return;
-		participants = Object.values(co.participants());
+		loading = false;
+		if (!$callObject) return;
+		participants = confirmedParticipants(e);
 	};
 	const updateParticpants = (e) => {
 		console.log('[update participants]', e);
-		if (!co) return;
-		participants = Object.values(co.participants());
+		if (!$callObject) return;
+
+		participants = confirmedParticipants(e);
 	};
 	const handleError = async () => {
 		console.error('Error: ending call and returning to home page');
@@ -60,7 +66,7 @@
 	 * END - DAILY EVENT CALLBACKS
 	 */
 
-	const createAndJoinCall = () => {
+	const createAndJoinCall = async () => {
 		const roomName = $page.params.roomId;
 		const domain = import.meta.env.VITE_DAILY_DOMAIN;
 		if (!roomName || !domain) {
@@ -71,25 +77,29 @@
 		// Create instance of Daily call object
 		const call = daily.createCallObject({ url });
 
-		// Join the call with the name set in the Home.vue form
-		call.join();
-
 		// Add call and participant event handler
 		// Visit https://docs.daily.co/reference/daily-js/events for more event info
 		call
-			.on('joining-meeting', handleJoiningMeeting)
-			.on('joined-meeting', updateParticpants)
+			.on('joining-meeting', updateParticpants)
+			.on('joined-meeting', handleJoinedMeeting)
 			.on('participant-joined', updateParticpants)
-			.on('participant-updated', updateParticpants)
+			.on('participant-left', updateParticpants)
+			.on('track-started', updateParticpants)
+			.on('track-stopped', updateParticpants)
 			.on('participant-left', updateParticpants)
 			.on('error', handleError)
 			// camera-error = device permissions issue
 			.on('camera-error', handleDeviceError)
 			.on('app-message', handleAppMessage);
 
+		// Join the call with the name set in the Home.vue form
+		await call.join();
+
 		// Assign in store for future reference
 		callObject.set(call);
 	};
+
+	const updateLoading = () => (loading = false);
 
 	onMount(() => {
 		if (browser) {
@@ -110,17 +120,30 @@
 <div>
 	<button on:click={goHome}>Go back</button>
 </div>
-<div class="call-container">
-	{#each participants as participant}
-		<VideoTile {participant} />
-	{/each}
-	{#if participants?.length === 1}
-		<WaitingForOthersTile />
-	{/if}
-	<Chat />
-</div>
+{#if loading}
+	<div class="loading">
+		<Loading />
+	</div>
+{:else}
+	<div class="call-container">
+		{#each participants as participant}
+			<VideoTile
+				{participant}
+				on:update-participants={updateParticpants}
+				on:loaded={updateLoading}
+			/>
+		{/each}
+		{#if participants?.length === 1}
+			<WaitingForOthersTile />
+		{/if}
+		<Chat />
+	</div>
+{/if}
 
 <style>
+	.loading {
+		margin: auto;
+	}
 	.call-container {
 		display: flex;
 		flex-wrap: wrap;

@@ -8,11 +8,13 @@
 	import WaitingForOthersTile from '../../lib/call/WaitingForOthersTile.svelte';
 	import Chat from '../../lib/call/Chat.svelte';
 	import Loading from '../../lib/call/Loading.svelte';
+	import PermissionErrorMessage from '../../lib/call/PermissionErrorMessage.svelte';
 	import { chatHistory } from '../../store';
 
 	let callObject;
 	let participants = [];
 	let loading = true;
+	let deviceError = false;
 	$: screen = participants.filter((p) => p?.screen);
 
 	const destroyCall = async () => {
@@ -37,10 +39,15 @@
 		);
 	};
 
+	const updateLoading = () => (loading = false);
+	const clearDeviceError = () => {
+		goHome();
+		deviceError = false;
+	};
+
 	/**
 	 * DAILY EVENT CALLBACKS
 	 */
-
 	const handleJoinedMeeting = (e) => {
 		console.log('[joined-meeting]', e);
 		loading = false;
@@ -58,7 +65,7 @@
 		await goHome();
 	};
 	const handleDeviceError = () => {
-		// TODO: device permissions
+		deviceError = true;
 	};
 	const handleAppMessage = (e) => {
 		// add chat message to message history
@@ -85,6 +92,8 @@
 			.on('joined-meeting', handleJoinedMeeting)
 			.on('participant-joined', updateParticpants)
 			.on('participant-left', updateParticpants)
+			/* We're using track-started and track-stopped instead of 
+			 participant-updated to get track-related updates. */
 			.on('track-started', updateParticpants)
 			.on('track-stopped', updateParticpants)
 			.on('participant-left', updateParticpants)
@@ -96,8 +105,6 @@
 		// Join the call with the name set in the Home.vue form
 		await callObject.join();
 	};
-
-	const updateLoading = () => (loading = false);
 
 	onMount(() => {
 		if (browser) {
@@ -124,6 +131,8 @@ there are any errors loading the call -->
 	<div class="loading">
 		<Loading />
 	</div>
+{:else if deviceError}
+	<PermissionErrorMessage on:clear-device-error={clearDeviceError} />
 {:else}
 	<!-- Render an optional screen share above the participant tiles -->
 	{#if screen?.length > 0}

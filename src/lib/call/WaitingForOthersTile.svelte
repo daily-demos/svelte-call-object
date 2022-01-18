@@ -33,6 +33,7 @@
 		font-size: 1.25rem;
 		font-weight: normal;
 		margin: 0.25rem;
+		text-align: center;
 	}
 	p {
 		color: var(--white);

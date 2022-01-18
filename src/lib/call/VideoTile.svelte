@@ -17,10 +17,6 @@
 	let videoInterval;
 	let audioInterval;
 
-	$: {
-		console.log('currentColor:', screen);
-	}
-
 	/**
 	 * Set the video stream (Svelte-specific workaround via
 	 * https://github.com/sveltejs/svelte/issues/3492#issuecomment-583794947)
@@ -91,7 +87,7 @@
 		<NoVideoPlaceholder {participant} />
 	{:else}
 		<video
-			id={`video-${participant?.session_id}`}
+			id={`video-${participant?.session_id || screen?.session_id}`}
 			autoPlay
 			muted
 			playsInline
@@ -129,13 +125,18 @@
 		position: relative;
 		flex: 1 1 350px;
 		margin: 10px 20px;
+		min-height: 100px;
 	}
 	.video-tile.screen {
 		flex: 0;
+		max-height: 50vh;
 	}
 	video {
 		width: 100%;
 		border-radius: 8px;
+	}
+	.screen video {
+		max-height: inherit;
 	}
 	.audio-icon {
 		position: absolute;

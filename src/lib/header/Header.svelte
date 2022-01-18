@@ -16,7 +16,12 @@
 		</div>
 
 		<div class="corner right">
-			<a href="https://daily.co" class="buttonish" target="_blank" rel="noreferrer noopenner">
+			<a
+				href="https://docs.daily.co/reference/daily-js"
+				class="buttonish"
+				target="_blank"
+				rel="noreferrer noopenner"
+			>
 				<span>API docs</span>
 				<img src={newTab} class="small" alt="Daily docs" />
 			</a>
@@ -87,5 +92,10 @@
 	}
 	a:hover {
 		color: var(--turquoise);
+	}
+	@media screen and (max-width: 500px) {
+		.corner.left span {
+			display: none;
+		}
 	}
 </style>

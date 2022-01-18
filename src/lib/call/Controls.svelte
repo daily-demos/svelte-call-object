@@ -1,6 +1,8 @@
 <script>
+	import { onMount } from 'svelte';
+	import daily from '@daily-co/daily-js';
+	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
-	import {} from '../../store';
 	import camOnIcon from './assets/vid_on.svg';
 	import camOffIcon from './assets/vid_off.svg';
 	import micOnIcon from './assets/mic_on.svg';
@@ -9,9 +11,16 @@
 	import leaveIcon from './assets/leave_call.svg';
 
 	export let callObject;
+	let browserSupport;
 	$: camOn = callObject?.localVideo();
 	$: micOn = callObject?.localAudio();
 
+	onMount(() => {
+		if (browser) {
+			browserSupport = daily?.supportedBrowser();
+			console.log('herrrr', browserSupport);
+		}
+	});
 	const toggleVideo = () => {
 		if (!callObject) return;
 		const currentVid = callObject.localVideo();
@@ -26,7 +35,6 @@
 	};
 	const toggleScreenShare = () => {
 		if (!callObject) return;
-		// TODO: check if screenshare is supported co.supportedBrowser?.()?.supportsScreenShare;
 
 		const isScreenSharing = Object.values(callObject.participants()).filter(
 			(p) => p?.screen && p?.local
@@ -54,9 +62,17 @@
 		<button on:click={toggleAudio}>
 			<img src={micOn ? micOnIcon : micOffIcon} alt="Toggle local audio" />
 		</button>
-		<button on:click={toggleScreenShare}><img src={screenIcon} alt="Toggle screen share" /></button>
+		<!-- Only show the screen share button if the browser actually supports it -->
+		{#if browserSupport?.supportsScreenShare}
+			<button on:click={toggleScreenShare}>
+				<img src={screenIcon} alt="Toggle screen share" />
+			</button>
+		{/if}
 	</div>
-	<button class="leave" on:click={leaveCall}><img src={leaveIcon} alt="Leave call" /></button>
+	<!-- End call locally and return to home screen -->
+	<button class="leave" on:click={leaveCall}>
+		<img src={leaveIcon} alt="Leave call" />
+	</button>
 </div>
 
 <style>
@@ -74,7 +90,7 @@
 	}
 	.devices {
 		border-radius: 12px;
-		background-color: #121a24;
+		background-color: var(--dark-blue);
 		opacity: 0.85;
 		padding: 14px 10px 15px;
 	}

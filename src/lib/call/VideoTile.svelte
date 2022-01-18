@@ -9,6 +9,7 @@
 
 	export let participant;
 	export let callObject;
+	export let screen;
 
 	const INTERVAL_DELAY = 1500;
 	let videoSrc;
@@ -17,7 +18,7 @@
 	let audioInterval;
 
 	$: {
-		console.log('currentColor:', participant);
+		console.log('currentColor:', screen);
 	}
 
 	/**
@@ -35,11 +36,12 @@
 		};
 	}
 
-	onMount(() => {
+	const initializeTracks = () => {
 		/**
 		 * Handle mounting issue where tracks may still be loading when the
 		 * tile first mounts. Update callObject value in parent component if it's
 		 * loading.
+		 * Note: We use persistantTrack to avoid audio bugs in Safari.
 		 */
 		videoInterval = setInterval(() => {
 			console.log('[video state]', participant?.tracks?.video?.state);
@@ -62,10 +64,28 @@
 				clearInterval(audioInterval);
 			}
 		}, INTERVAL_DELAY);
+	};
+	const initializeScreen = () => {
+		videoSrc = new MediaStream([screen?.screenVideoTrack]);
+	};
+
+	onMount(() => {
+		if (screen) {
+			/**
+			 * Render screen share video track.
+			 * We're not currently considering a possible screenAudioTrack.
+			 */
+			initializeScreen();
+		} else {
+			/**
+			 * Render the video and audio tracks for the participant.
+			 */
+			initializeTracks();
+		}
 	});
 </script>
 
-<div class="video-tile">
+<div class={screen ? 'video-tile screen' : 'video-tile'}>
 	<!-- Add video element when video is playable -->
 	{#if !videoSrc}
 		<NoVideoPlaceholder {participant} />
@@ -80,7 +100,7 @@
 	{/if}
 
 	<!-- Hide black video behind name card when video is off -->
-	{#if !participant?.video}
+	{#if !participant?.video && !screen}
 		<NoVideoPlaceholder {participant} />
 	{/if}
 
@@ -109,7 +129,9 @@
 		position: relative;
 		flex: 1 1 350px;
 		margin: 10px 20px;
-		position: relative;
+	}
+	.video-tile.screen {
+		flex: 0;
 	}
 	video {
 		width: 100%;
@@ -120,7 +142,7 @@
 		right: 0.5rem;
 		bottom: 0.75rem;
 		background-color: var(--dark-grey);
-		padding: 0.5rem;
+		padding: 0.5rem 0.5rem 0.25rem;
 		border-radius: 50%;
 		opacity: 0.8;
 	}

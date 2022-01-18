@@ -13,6 +13,7 @@
 	let callObject;
 	let participants = [];
 	let loading = true;
+	$: screen = participants.filter((p) => p?.screen);
 
 	const destroyCall = async () => {
 		if (callObject) {
@@ -114,19 +115,30 @@
 	<title>Daily call</title>
 </svelte:head>
 
-<!-- This in-call view is _not_ optimized for large meetings.
-Please see our large meetings series to learn more about 
-pagination, manual track subscription, and updating 
-video track receive settings. 
-https://www.daily.co/blog/tag/large-meeting-series/ -->
+<!-- Include a button to return to the home screen in case 
+there are any errors loading the call -->
 <div>
-	<button on:click={goHome}>Go back</button>
+	<button on:click={goHome}>Home</button>
 </div>
 {#if loading}
 	<div class="loading">
 		<Loading />
 	</div>
 {:else}
+	<!-- Render an optional screen share above the participant tiles -->
+	{#if screen?.length > 0}
+		<VideoTile
+			{callObject}
+			screen={screen[0]}
+			on:update-participants={updateParticpants}
+			on:loaded={updateLoading}
+		/>
+	{/if}
+	<!-- This in-call view is _not_ optimized for large meetings.
+	Please see our large meetings series to learn more about 
+	pagination, manual track subscription, and updating 
+	video track receive settings. 
+	https://www.daily.co/blog/tag/large-meeting-series/ -->
 	<div class="call-container">
 		<!-- Render a video tile for each participant -->
 		{#each participants as participant}
@@ -159,11 +171,16 @@ https://www.daily.co/blog/tag/large-meeting-series/ -->
 	button {
 		border: 1px solid var(--grey);
 		border-radius: 8px;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		padding-top: 0.5rem;
-		padding-bottom: 0.5rem;
+		margin-left: 1rem;
+		margin-bottom: 1rem;
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 		background-color: var(--white);
 		cursor: pointer;
+		font-size: 10px;
+		text-transform: uppercase;
+		font-weight: 700;
 	}
 </style>

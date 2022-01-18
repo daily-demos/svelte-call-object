@@ -15,7 +15,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		aspect-ratio: 16/9;
+		height: 100%;
 		border-radius: 8px;
 		background-color: var(--blue);
 		z-index: 10;

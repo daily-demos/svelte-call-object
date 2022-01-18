@@ -1,5 +1,5 @@
 <script>
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { onMount, createEventDispatcher, onDestroy } from 'svelte';
 	import Controls from './Controls.svelte';
 	import micOnIcon from './assets/mic_on.svg';
 	import micOffIcon from './assets/mic_off.svg';
@@ -16,6 +16,7 @@
 	let audioSrc;
 	let videoInterval;
 	let audioInterval;
+	let screenInterval;
 
 	/**
 	 * Set the video stream (Svelte-specific workaround via
@@ -62,7 +63,15 @@
 		}, INTERVAL_DELAY);
 	};
 	const initializeScreen = () => {
-		videoSrc = new MediaStream([screen?.screenVideoTrack]);
+		screenInterval = setInterval(() => {
+			console.log('[screen state]', screen?.tracks?.screenVideo?.state);
+			if (screen?.tracks?.screenVideo?.state === 'loading') {
+				dispatch('update-participants');
+			} else {
+				videoSrc = new MediaStream([screen?.tracks?.screenVideo?.track]);
+				clearInterval(screenInterval);
+			}
+		}, INTERVAL_DELAY);
 	};
 
 	onMount(() => {
@@ -79,6 +88,13 @@
 			initializeTracks();
 		}
 	});
+
+	onDestroy(() => {
+		// Clean up leftover intervals _just_ in case
+		if (videoInterval) clearInterval(videoInterval);
+		if (audioInterval) clearInterval(audioInterval);
+		if (screenInterval) clearInterval(screenInterval);
+	});
 </script>
 
 <div class={screen ? 'video-tile screen' : 'video-tile'}>
@@ -86,6 +102,7 @@
 	{#if !videoSrc}
 		<NoVideoPlaceholder {participant} />
 	{:else}
+		<!-- This will render either the participant video or screen share video -->
 		<video
 			id={`video-${participant?.session_id || screen?.session_id}`}
 			autoPlay
@@ -96,7 +113,7 @@
 	{/if}
 
 	<!-- Hide black video behind name card when video is off -->
-	{#if !participant?.video && !screen}
+	{#if !participant?.video && screen?.length === 0}
 		<NoVideoPlaceholder {participant} />
 	{/if}
 

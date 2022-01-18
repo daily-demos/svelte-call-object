@@ -18,7 +18,6 @@
 	onMount(() => {
 		if (browser) {
 			browserSupport = daily?.supportedBrowser();
-			console.log('herrrr', browserSupport);
 		}
 	});
 	const toggleVideo = () => {

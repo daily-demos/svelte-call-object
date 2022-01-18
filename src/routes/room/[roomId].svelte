@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import daily from '@daily-co/daily-js';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -34,6 +34,7 @@
 
 	const currentParticipants = (e) => {
 		const particpantArr = Object.values(callObject.participants());
+		// Use most recent version of each participant
 		return particpantArr.map((p) =>
 			p?.session_id === e?.participant?.session_id ? e?.participant : p
 		);
@@ -115,6 +116,22 @@
 		if (document) {
 			document?.body?.classList?.add('in-call');
 		}
+	});
+
+	onDestroy(() => {
+		if (!callObject) return;
+		// Remove Daily event handling when call ends
+		callObject
+			.off('joining-meeting', updateParticpants)
+			.off('joined-meeting', handleJoinedMeeting)
+			.off('participant-joined', updateParticpants)
+			.off('participant-left', updateParticpants)
+			.off('track-started', updateParticpants)
+			.off('track-stopped', updateParticpants)
+			.off('participant-left', updateParticpants)
+			.off('error', handleError)
+			.off('camera-error', handleDeviceError)
+			.off('app-message', handleAppMessage);
 	});
 </script>
 

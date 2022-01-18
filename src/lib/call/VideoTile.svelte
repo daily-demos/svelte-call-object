@@ -113,7 +113,7 @@
 	{/if}
 
 	<!-- Hide black video behind name card when video is off -->
-	{#if !participant?.video && screen?.length === 0}
+	{#if !participant?.video && (!screen || screen?.length === 0)}
 		<NoVideoPlaceholder {participant} />
 	{/if}
 
@@ -143,6 +143,7 @@
 		flex: 1 1 350px;
 		margin: 10px 20px;
 		min-height: 100px;
+		display: flex;
 	}
 	.video-tile.screen {
 		flex: 0;

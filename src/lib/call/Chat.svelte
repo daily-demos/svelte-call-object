@@ -48,7 +48,7 @@
 		<div class="messages">
 			{#each $chatHistory as message}
 				<p transition:slide|local={{ easing: quintOut }} class="message">
-					{message.name}: {message.text}
+					<span class="message-name">{message.name}</span>: {message.text}
 				</p>
 			{/each}
 		</div>
@@ -103,6 +103,10 @@
 		flex-direction: column;
 		height: calc(100vh - 51px);
 		padding: 1rem;
+		overflow-y: scroll;
+	}
+	.message-name {
+		color: var(--dark-grey);
 	}
 	form {
 		border-bottom: var(--grey) 1px solid;

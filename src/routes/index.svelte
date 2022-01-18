@@ -14,6 +14,7 @@
 	<h1>Call object Svelte demo</h1>
 	<p>Demo a custom call interface built using Daily call object for Svelte.</p>
 
+	<!-- Provide a form to enter name and optional Daily URL -->
 	<RoomForm />
 	<p class="subtext">If prompted, select "Allow" to use your camera and mic for this call</p>
 </section>

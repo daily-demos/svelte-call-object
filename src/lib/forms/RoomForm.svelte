@@ -57,6 +57,9 @@
 	}
 </script>
 
+<!-- In this form, the username is required for the call but
+	the Daily URL is optional. If left empty, we will create
+	a new Daily room using VITE_DAILY_API_KEY. -->
 <form on:submit|preventDefault={submitForm}>
 	<label for="name">Your name</label>
 	<input id="name" type="text" bind:value={dailyName} required />

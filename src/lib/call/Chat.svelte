@@ -1,22 +1,23 @@
 <script>
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { callObject, chatHistory } from '../../store';
+	import { chatHistory } from '../../store';
 	import chat from './assets/chat.svg';
 	import close from './assets/x.svg';
 	import send from './assets/send.svg';
 
+	export let callObject;
 	let newText = '';
 	let chatIsOpen = false;
 
 	const sendMessage = () => {
-		if (!$callObject) return;
-		const local = $callObject.participants().local.user_name || 'Guest';
+		if (!callObject) return;
+		const local = callObject.participants().local.user_name || 'Guest';
 		const newMessage = {
 			name: local,
 			text: newText
 		};
-		$callObject.sendAppMessage(newMessage);
+		callObject.sendAppMessage(newMessage);
 		/**
 		 * Update chat history in store for the local user.
 		 * (Participants do not receive Daily app-message events for
@@ -31,6 +32,7 @@
 </script>
 
 <div class={chatIsOpen ? 'chat-open chat-container' : 'chat-close chat-container'}>
+	<!-- Show a button to toggle the chat in/out of view  -->
 	<div class="chat-view-button">
 		<button on:click={toggleChat}
 			>{#if chatIsOpen}
@@ -40,7 +42,9 @@
 			{/if}
 		</button>
 	</div>
+
 	<div class="chat">
+		<!-- Render each message in the existing chat history -->
 		<div class="messages">
 			{#each $chatHistory as message}
 				<p transition:slide|local={{ easing: quintOut }} class="message">
@@ -48,6 +52,8 @@
 				</p>
 			{/each}
 		</div>
+
+		<!-- Render a form for the local user to write and send a chat message -->
 		<form on:submit|preventDefault={sendMessage}>
 			<input type="text" placeholder="Type a message..." bind:value={newText} />
 			<button>

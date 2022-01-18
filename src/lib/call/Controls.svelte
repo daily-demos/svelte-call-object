@@ -1,53 +1,46 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { callObject } from '../../store';
+	import {} from '../../store';
 	import camOnIcon from './assets/vid_on.svg';
 	import camOffIcon from './assets/vid_off.svg';
 	import micOnIcon from './assets/mic_on.svg';
 	import micOffIcon from './assets/mic_off.svg';
 	import screenIcon from './assets/screen.svg';
 	import leaveIcon from './assets/leave_call.svg';
-	import { onMount } from 'svelte';
 
-	$: camOn = $callObject?.localVideo();
-	$: micOn = $callObject?.localAudio();
-
-	// onMount(() => {
-	// 	if ($callObject) return;
-
-	// 	camOn = $callObject.localVideo();
-	// 	micOn = $callObject.localAudio();
-	// });
+	export let callObject;
+	$: camOn = callObject?.localVideo();
+	$: micOn = callObject?.localAudio();
 
 	const toggleVideo = () => {
-		if (!$callObject) return;
-		const currentVid = $callObject.localVideo();
+		if (!callObject) return;
+		const currentVid = callObject.localVideo();
 		camOn = !currentVid;
-		$callObject.setLocalVideo(!currentVid);
+		callObject.setLocalVideo(!currentVid);
 	};
 	const toggleAudio = () => {
-		if (!$callObject) return;
-		const currentAudio = $callObject.localAudio();
+		if (!callObject) return;
+		const currentAudio = callObject.localAudio();
 		micOn = !currentAudio;
-		$callObject.setLocalAudio(!currentAudio);
+		callObject.setLocalAudio(!currentAudio);
 	};
 	const toggleScreenShare = () => {
-		if (!$callObject) return;
+		if (!callObject) return;
 		// TODO: check if screenshare is supported co.supportedBrowser?.()?.supportsScreenShare;
 
-		const isScreenSharing = Object.values($callObject.participants()).filter(
+		const isScreenSharing = Object.values(callObject.participants()).filter(
 			(p) => p?.screen && p?.local
 		);
 		if (isScreenSharing?.length) {
-			$callObject.stopScreenShare();
+			callObject.stopScreenShare();
 		} else {
-			$callObject.startScreenShare();
+			callObject.startScreenShare();
 		}
 	};
 	const leaveCall = async () => {
-		if (!$callObject) return;
-		await $callObject.leave();
-		await $callObject.destroy();
+		if (!callObject) return;
+		await callObject.leave();
+		await callObject.destroy();
 		document?.body?.classList?.remove('in-call');
 		goto(`/`);
 	};

@@ -20,7 +20,12 @@
 				<span>API docs</span>
 				<img src={newTab} class="small" alt="Daily docs" />
 			</a>
-			<a href="https://daily.co" target="_blank" class="plain-link" rel="noreferrer noopenner">
+			<a
+				href="https://github.com/daily-demos/svelte-call-object"
+				target="_blank"
+				class="plain-link"
+				rel="noreferrer noopenner"
+			>
 				<img src={githubLogo} alt="Daily demos Github" />
 			</a>
 		</div>

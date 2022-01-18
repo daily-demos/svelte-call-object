@@ -8,7 +8,9 @@
 	const dispatch = createEventDispatcher();
 
 	export let participant;
+	export let callObject;
 
+	const INTERVAL_DELAY = 1500;
 	let videoSrc;
 	let audioSrc;
 	let videoInterval;
@@ -49,7 +51,7 @@
 				dispatch('loaded');
 				clearInterval(videoInterval);
 			}
-		}, 2000);
+		}, INTERVAL_DELAY);
 
 		audioInterval = setInterval(() => {
 			console.log('[audio state]', participant?.tracks?.audio?.state);
@@ -59,7 +61,7 @@
 				audioSrc = new MediaStream([participant?.tracks?.audio?.persistentTrack]);
 				clearInterval(audioInterval);
 			}
-		}, 2000);
+		}, INTERVAL_DELAY);
 	});
 </script>
 
@@ -98,7 +100,7 @@
 
 	<!-- Display device controls for the local user -->
 	{#if participant?.local}
-		<Controls />
+		<Controls {callObject} />
 	{/if}
 </div>
 

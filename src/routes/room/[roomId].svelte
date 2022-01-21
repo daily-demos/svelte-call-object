@@ -101,11 +101,8 @@
 			.on('joined-meeting', handleJoinedMeeting)
 			.on('participant-joined', updateParticpants)
 			.on('participant-left', updateParticpants)
-			/* We're using track-started and track-stopped instead of 
-			 participant-updated to get track-related updates. */
-			.on('track-started', updateParticpants)
-			.on('track-stopped', updateParticpants)
 			.on('participant-left', updateParticpants)
+			.on('participant-updated', updateParticpants)
 			.on('error', handleError)
 			// camera-error = device permissions issue
 			.on('camera-error', handleDeviceError)

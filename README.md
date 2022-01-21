@@ -40,6 +40,7 @@ The room URL will be in the following format:
 After cloning this repo, run the following commands from the project's root directory.
 
 ```bash
+npm i
 npm run dev
 
 # or start the server and open the app in a new browser tab

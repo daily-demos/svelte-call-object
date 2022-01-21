@@ -51,6 +51,15 @@ Visit `http://localhost:3000` to view the app locally.
 
 ---
 
+## Demo features
+
+- Creates new Daily rooms via the app UI
+- Accepts existing room URLs
+- Supports multi-participant video calls
+- Chat messaging
+- Local device controls
+- In-call screen sharing (max. 1 screen)
+
 ## Daily API interactions
 
 This demo uses the following Daily methods:

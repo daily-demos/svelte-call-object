@@ -69,6 +69,13 @@
 		deviceError = true;
 	};
 	const handleAppMessage = (e) => {
+		/*
+		 * app-message can be used for data exchange other
+		 than just chat messages.
+		Don't update chat unless it's in the message format 
+		we're expecting.
+		 */
+		if (!e?.data?.name && !e?.data?.text) return;
 		// add chat message to message history
 		$chatHistory = [...$chatHistory, e?.data];
 	};

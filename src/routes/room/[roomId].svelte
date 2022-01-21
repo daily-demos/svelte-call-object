@@ -9,7 +9,7 @@
 	import Chat from '../../lib/call/Chat.svelte';
 	import Loading from '../../lib/call/Loading.svelte';
 	import PermissionErrorMessage from '../../lib/call/PermissionErrorMessage.svelte';
-	import { chatHistory } from '../../store';
+	import { chatHistory, username } from '../../store';
 
 	let callObject;
 	let participants = [];
@@ -90,9 +90,10 @@
 			// TODO: eep no valid url to use. show error
 			return;
 		}
+
 		const url = `https://${domain}.daily.co/${roomName}`;
 		// Create instance of Daily call object
-		callObject = daily.createCallObject({ url });
+		callObject = daily.createCallObject({ url, userName: $username });
 		// Add call and participant event handler
 		// Visit https://docs.daily.co/reference/daily-js/events for more event info
 		callObject

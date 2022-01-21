@@ -52,6 +52,6 @@
 		display: block;
 		height: 36px;
 		width: 36px;
-		stroke: #fff;
+		stroke: var(--white);
 	}
 </style>

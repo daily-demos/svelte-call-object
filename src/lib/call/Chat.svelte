@@ -84,7 +84,7 @@
 		height: 56px;
 	}
 	.chat-view-button button {
-		background-color: #fff;
+		background-color: var(--white);
 		border: none;
 		cursor: pointer;
 		border-radius: 16px 0 0 16px;

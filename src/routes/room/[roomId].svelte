@@ -15,7 +15,7 @@
 	let participants = [];
 	let loading = true;
 	let deviceError = false;
-	$: screen = participants.filter((p) => p?.screen);
+	$: screensList = participants?.filter((p) => p?.screen);
 
 	const destroyCall = async () => {
 		if (callObject) {
@@ -152,10 +152,12 @@ there are any errors loading the call -->
 	<PermissionErrorMessage on:clear-device-error={clearDeviceError} />
 {:else}
 	<!-- Render an optional screen share above the participant tiles -->
-	{#if screen?.length > 0}
+	{#if screensList?.length > 0}
+		<!-- Note: We'll only allow one screen share to be displayed
+		for this demo. Take the first one available -->
 		<VideoTile
 			{callObject}
-			screen={screen[0]}
+			screen={screensList[0]}
 			on:update-participants={updateParticpants}
 			on:loaded={updateLoading}
 		/>

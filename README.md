@@ -2,7 +2,7 @@
 
 This project demonstrates how to build a custom video call with Daily's custom [call object](https://docs.staging.daily.co/call-object) mode using [SvelteKit](https://kit.svelte.dev/).
 
-_Note: This demo has not been optimized for large calls. Please review our [large meeting series](https://www.daily.co/blog/tag/large-meeting-series/) for more information or [contact us](https://www.daily.co/contact/support) for help getting your app production-ready._
+_Note: This demo has not been optimized for large calls. Please review our [large meeting guide](https://docs.daily.co/guides/how-daily-works/scaling-applications-to-support-large-calls) for more information or [contact us](https://www.daily.co/contact/support) for help getting your app production-ready._
 
 <img src="home.png" alt="Demo home screen" style="max-width:600px;">
 

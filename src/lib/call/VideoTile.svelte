@@ -42,11 +42,12 @@
 		 * Note: We use persistantTrack to avoid audio bugs in Safari.
 		 */
 		videoInterval = setInterval(() => {
-			console.log('[video state]', participant?.tracks?.video?.state);
-			if (participant?.tracks?.video?.state === 'loading') {
+			const { video } = participant?.tracks;
+			console.log('[video state]', video?.state);
+			if (video?.state === 'loading') {
 				dispatch('update-participants');
 			} else {
-				videoSrc = new MediaStream([participant?.tracks?.video?.persistentTrack]);
+				videoSrc = new MediaStream([video?.persistentTrack]);
 				// Clear loading svg in parent component when the video is ready
 				dispatch('loaded');
 				clearInterval(videoInterval);
@@ -54,22 +55,25 @@
 		}, INTERVAL_DELAY);
 
 		audioInterval = setInterval(() => {
-			console.log('[audio state]', participant?.tracks?.audio?.state);
-			if (participant?.tracks?.audio?.state === 'loading') {
+			const { audio } = participant?.tracks;
+
+			console.log('[audio state]', audio?.state);
+			if (audio?.state === 'loading') {
 				dispatch('update-participants');
 			} else {
-				audioSrc = new MediaStream([participant?.tracks?.audio?.persistentTrack]);
+				audioSrc = new MediaStream([audio?.persistentTrack]);
 				clearInterval(audioInterval);
 			}
 		}, INTERVAL_DELAY);
 	};
 	const initializeScreen = () => {
 		screenInterval = setInterval(() => {
-			console.log('[screen state]', screen?.tracks?.screenVideo?.state);
-			if (screen?.tracks?.screenVideo?.state === 'loading') {
+			const { screenVideo } = screen?.tracks;
+			console.log('[screen state]', screenVideo?.state);
+			if (screenVideo?.state === 'loading') {
 				dispatch('update-participants');
 			} else {
-				videoSrc = new MediaStream([screen?.tracks?.screenVideo?.track]);
+				videoSrc = new MediaStream([screenVideo?.track]);
 				clearInterval(screenInterval);
 			}
 		}, INTERVAL_DELAY);

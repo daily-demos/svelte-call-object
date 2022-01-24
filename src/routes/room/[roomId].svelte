@@ -9,7 +9,7 @@
 	import Chat from '../../lib/call/Chat.svelte';
 	import Loading from '../../lib/call/Loading.svelte';
 	import PermissionErrorMessage from '../../lib/call/PermissionErrorMessage.svelte';
-	import { chatHistory, username } from '../../store';
+	import { chatHistory, dailyErrorMessage, username } from '../../store';
 
 	let callObject;
 	let participants = [];
@@ -104,12 +104,18 @@
 			.on('participant-left', updateParticpants)
 			.on('participant-updated', updateParticpants)
 			.on('error', handleError)
-			// camera-error = device permissions issue
+			// camera-error = device error, like device in use or permissions issues
 			.on('camera-error', handleDeviceError)
 			.on('app-message', handleAppMessage);
 
 		// Join the call with the name set in the Home.vue form
-		await callObject.join();
+		try {
+			await callObject.join();
+			// reset possible existing error message
+			dailyErrorMessage.set('');
+		} catch (e) {
+			dailyErrorMessage.set(e);
+		}
 	};
 
 	onMount(() => {

@@ -31,13 +31,11 @@ export async function post() {
 					room
 				})
 			};
-		}
-		if (res.status !== 200) {
+		} else {
 			return {
-				status: 400,
+				status: res.status,
 				body: JSON.stringify({
-					success: false,
-					message: 'bad request'
+					success: false
 				})
 			};
 		}

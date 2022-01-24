@@ -1,10 +1,9 @@
 <script>
-	import { username } from '../../store.js';
+	import { dailyErrorMessage, username } from '../../store.js';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	let dailyUrl = '';
 	let dailyName = '';
-	let errorMessage = '';
 
 	onMount(() => {
 		/**
@@ -48,11 +47,13 @@
 
 		if (data.success && data?.room?.name) {
 			goto(`/room/${data.room.name}`);
-		} else if (data.status === '200') {
-			errorMessage = `bad request`;
-		}
-		if (data.status === '500') {
-			errorMessage = `server error :|`;
+			dailyErrorMessage.set('');
+		} else if (data.status === '400') {
+			dailyErrorMessage.set('bad request');
+		} else if (data.status === '500') {
+			dailyErrorMessage.set('server error :|');
+		} else {
+			dailyErrorMessage.set('Oops, something went wrong!');
 		}
 	}
 </script>
@@ -67,7 +68,9 @@
 	<input id="url" type="text" bind:value={dailyUrl} />
 	<input type="submit" value={!dailyUrl ? 'Create room' : 'Join call'} />
 </form>
-<p>{errorMessage}</p>
+{#if $dailyErrorMessage}
+	<p class="error-message">{$dailyErrorMessage}</p>
+{/if}
 
 <style>
 	form {
@@ -87,5 +90,10 @@
 		background-color: var(--turquoise);
 		font-weight: 700;
 		cursor: pointer;
+	}
+	.error-message {
+		color: var(--red);
+		font-weight: 600;
+		font-size: 12px;
 	}
 </style>

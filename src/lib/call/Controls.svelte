@@ -38,10 +38,12 @@
 	const toggleScreenShare = () => {
 		if (!callObject) return;
 
-		const isScreenSharing = Object.values(callObject.participants()).filter(
-			(p) => p?.screen && p?.local
-		);
-		if (isScreenSharing?.length) {
+		/**
+		 * If there's a live screen share and it's the local participant,
+		 * toggle it off on button click. Otherwise, share screen.
+		 */
+		const isScreenSharing = screensList?.length > 0 && screensList[0].local;
+		if (isScreenSharing) {
 			callObject.stopScreenShare();
 		} else {
 			callObject.startScreenShare();

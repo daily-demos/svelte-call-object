@@ -10,6 +10,7 @@
 	export let participant;
 	export let callObject;
 	export let screen;
+	export let screensList;
 
 	const INTERVAL_DELAY = 1500;
 	let videoSrc;
@@ -133,7 +134,7 @@
 
 	<!-- Display device controls for the local user -->
 	{#if participant?.local}
-		<Controls {callObject} />
+		<Controls {callObject} {screensList} />
 	{/if}
 </div>
 

@@ -11,9 +11,12 @@
 	import leaveIcon from './assets/leave_call.svg';
 
 	export let callObject;
+	export let screensList;
 	let browserSupport;
-	$: camOn = callObject?.localVideo();
-	$: micOn = callObject?.localAudio();
+	let camOn;
+	let micOn;
+
+	$: disableScreenShare = screensList?.length > 0 && !screensList[0].local;
 
 	onMount(() => {
 		if (browser) {
@@ -51,6 +54,13 @@
 		document?.body?.classList?.remove('in-call');
 		goto(`/`);
 	};
+
+	onMount(() => {
+		if (callObject) {
+			camOn = callObject?.localVideo();
+			micOn = callObject?.localAudio();
+		}
+	});
 </script>
 
 <div class="controls-container">
@@ -63,7 +73,7 @@
 		</button>
 		<!-- Only show the screen share button if the browser actually supports it -->
 		{#if browserSupport?.supportsScreenShare}
-			<button on:click={toggleScreenShare}>
+			<button on:click={toggleScreenShare} disabled={disableScreenShare}>
 				<img src={screenIcon} alt="Toggle screen share" />
 			</button>
 		{/if}
@@ -103,5 +113,9 @@
 		opacity: 0.85;
 		padding: 14px 16px 15px;
 		border-radius: 12px;
+	}
+	button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
 	}
 </style>

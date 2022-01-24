@@ -178,6 +178,7 @@ there are any errors loading the call -->
 			<VideoTile
 				{callObject}
 				{participant}
+				{screensList}
 				on:update-participants={updateParticpants}
 				on:loaded={updateLoading}
 			/>

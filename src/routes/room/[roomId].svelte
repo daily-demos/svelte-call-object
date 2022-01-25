@@ -152,8 +152,10 @@
 
 <!-- Include a button to return to the home screen in case 
 there are any errors loading the call -->
-<div>
+<div class="call-info">
 	<button on:click={goHome}>Home</button>
+
+	<p>{window.location}</p>
 </div>
 {#if loading}
 	<div class="loading">
@@ -222,5 +224,15 @@ there are any errors loading the call -->
 		font-size: 10px;
 		text-transform: uppercase;
 		font-weight: 700;
+	}
+	.call-info {
+		display: flex;
+		flex-direction: flex-start;
+	}
+	.call-info p {
+		color: var(--turquoise);
+		margin: 0;
+		padding-left: 1rem;
+		font-size: 14px;
 	}
 </style>

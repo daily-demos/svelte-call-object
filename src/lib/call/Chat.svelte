@@ -1,7 +1,7 @@
 <script>
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { chatHistory } from '../../store';
+	import { chatMessages } from '../../store';
 	import chat from './assets/chat.svg';
 	import close from './assets/x.svg';
 	import send from './assets/send.svg';
@@ -23,7 +23,7 @@
 		 * (Participants do not receive Daily app-message events for
 		 * their own messages, btw!)
 		 */
-		$chatHistory = [...$chatHistory, newMessage];
+		$chatMessages = [...$chatMessages, newMessage];
 
 		// Clear input value
 		newText = '';
@@ -46,7 +46,7 @@
 	<div class="chat">
 		<!-- Render each message in the existing chat history -->
 		<div class="messages">
-			{#each $chatHistory as message}
+			{#each $chatMessages as message}
 				<p transition:slide|local={{ easing: quintOut }} class="message">
 					<span class="message-name">{message.name}</span>: {message.text}
 				</p>

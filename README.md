@@ -57,6 +57,7 @@ Visit `http://localhost:3000` to view the app locally.
 - Accepts existing room URLs
 - Supports multi-participant video calls
 - Chat messaging
+  - Chat messages are saved in currently saved in local state. Persistent chat history functionality can be added but is not currently included.
 - Local device controls
 - In-call screen sharing (max. 1 screen)
 

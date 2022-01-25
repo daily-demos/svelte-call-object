@@ -9,7 +9,7 @@
 	import Chat from '../../lib/call/Chat.svelte';
 	import Loading from '../../lib/call/Loading.svelte';
 	import PermissionErrorMessage from '../../lib/call/PermissionErrorMessage.svelte';
-	import { chatHistory, dailyErrorMessage, username } from '../../store';
+	import { chatMessages, dailyErrorMessage, username } from '../../store';
 
 	let callObject;
 	let participants = [];
@@ -77,7 +77,7 @@
 		 */
 		if (!e?.data?.name && !e?.data?.text) return;
 		// add chat message to message history
-		$chatHistory = [...$chatHistory, e?.data];
+		$chatMessages = [...$chatMessages, e?.data];
 	};
 	/**
 	 * END - DAILY EVENT CALLBACKS

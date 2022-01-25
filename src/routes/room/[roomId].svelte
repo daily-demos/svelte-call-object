@@ -12,6 +12,7 @@
 	import { chatMessages, dailyErrorMessage, username } from '../../store';
 
 	let callObject;
+	let shareLink;
 	let participants = [];
 	let loading = true;
 	let deviceError = false;
@@ -144,6 +145,14 @@
 			.off('camera-error', handleDeviceError)
 			.off('app-message', handleAppMessage);
 	});
+	onMount(() => {
+		if (window) {
+			shareLink = window?.location;
+		}
+	});
+	onDestroy(() => {
+		shareLink = null;
+	});
 </script>
 
 <svelte:head>
@@ -155,7 +164,9 @@ there are any errors loading the call -->
 <div class="call-info">
 	<button on:click={goHome}>Home</button>
 
-	<p>{window.location}</p>
+	{#if shareLink}
+		<p>{shareLink}</p>
+	{/if}
 </div>
 {#if loading}
 	<div class="loading">

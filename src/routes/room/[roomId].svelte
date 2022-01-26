@@ -132,6 +132,7 @@
 
 	onDestroy(() => {
 		if (!callObject) return;
+		shareLink = null;
 		// Remove Daily event handling when call ends
 		callObject
 			.off('joining-meeting', updateParticpants)
@@ -149,9 +150,6 @@
 		if (window) {
 			shareLink = window?.location;
 		}
-	});
-	onDestroy(() => {
-		shareLink = null;
 	});
 </script>
 

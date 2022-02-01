@@ -41,7 +41,6 @@
 		);
 	};
 
-	const updateLoading = () => (loading = false);
 	const clearDeviceError = () => {
 		goHome();
 		deviceError = false;
@@ -177,12 +176,7 @@ there are any errors loading the call -->
 	{#if screensList?.length > 0}
 		<!-- Note: We'll only allow one screen share to be displayed
 		for this demo. Take the first one available -->
-		<VideoTile
-			{callObject}
-			screen={screensList[0]}
-			on:update-participants={updateParticpants}
-			on:loaded={updateLoading}
-		/>
+		<VideoTile {callObject} screen={screensList[0]} />
 	{/if}
 	<!-- This in-call view is _not_ optimized for large meetings.
 	Please see our large meetings series to learn more about 
@@ -192,13 +186,7 @@ there are any errors loading the call -->
 	<div class="call-container">
 		<!-- Render a video tile for each participant -->
 		{#each participants as participant}
-			<VideoTile
-				{callObject}
-				{participant}
-				{screensList}
-				on:update-participants={updateParticpants}
-				on:loaded={updateLoading}
-			/>
+			<VideoTile {callObject} {participant} {screensList} />
 		{/each}
 
 		<!-- Show a waiting message if the local user is alone in the call -->

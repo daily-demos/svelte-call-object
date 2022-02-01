@@ -1,23 +1,44 @@
 <script>
-	import { onMount, createEventDispatcher, onDestroy } from 'svelte';
 	import Controls from './Controls.svelte';
 	import micOnIcon from './assets/mic_on.svg';
 	import micOffIcon from './assets/mic_off.svg';
 	import NoVideoPlaceholder from './NoVideoPlaceholder.svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let participant;
 	export let callObject;
 	export let screen;
 	export let screensList;
 
-	const INTERVAL_DELAY = 1500;
+	let videoTrackSet = false;
 	let videoSrc;
+	$: videoTrack = participant?.tracks?.video;
+	$: screenTrack = screen?.tracks?.screenVideo;
+	$: {
+		// videoSrc could be a participant track or a screen share so we
+		// check for both possibilities.
+
+		// In either case, we wait until the track is playable and then only
+		// set it once to avoid rerendering it
+		if (!screen && videoTrack?.state === 'playable' && !videoTrackSet) {
+			videoSrc = new MediaStream([videoTrack?.persistentTrack]);
+			videoTrackSet = true;
+		} else if (screen && screenTrack?.state === 'playable' && !videoTrackSet) {
+			videoSrc = new MediaStream([screenTrack?.track]);
+			videoTrackSet = true;
+		}
+	}
+
+	let audioTrackSet = false;
 	let audioSrc;
-	let videoInterval;
-	let audioInterval;
-	let screenInterval;
+	$: audioTrack = participant?.tracks?.audio;
+	$: {
+		// Wait until the track is playable and then only set it once to avoid rerendering it
+		if (audioTrack?.state === 'playable' && !audioTrackSet) {
+			// Use persistentTrack to avoid issues in Safari
+			audioSrc = new MediaStream([audioTrack?.persistentTrack]);
+			audioTrackSet = true;
+		}
+	}
 
 	/**
 	 * Set the video stream (Svelte-specific workaround via
@@ -33,73 +54,6 @@
 			}
 		};
 	}
-
-	const initializeTracks = () => {
-		/**
-		 * Handle mounting issue where tracks may still be loading when the
-		 * tile first mounts. Update callObject value in parent component if it's
-		 * loading.
-		 * Note: We use persistantTrack to avoid audio bugs in Safari.
-		 */
-		videoInterval = setInterval(() => {
-			const { video } = participant?.tracks;
-			console.log('[video state]', video?.state);
-			if (video?.state === 'loading') {
-				dispatch('update-participants');
-			} else {
-				videoSrc = new MediaStream([video?.persistentTrack]);
-				// Clear loading svg in parent component when the video is ready
-				dispatch('loaded');
-				clearInterval(videoInterval);
-			}
-		}, INTERVAL_DELAY);
-
-		audioInterval = setInterval(() => {
-			const { audio } = participant?.tracks;
-
-			console.log('[audio state]', audio?.state);
-			if (audio?.state === 'loading') {
-				dispatch('update-participants');
-			} else {
-				audioSrc = new MediaStream([audio?.persistentTrack]);
-				clearInterval(audioInterval);
-			}
-		}, INTERVAL_DELAY);
-	};
-	const initializeScreen = () => {
-		screenInterval = setInterval(() => {
-			const { screenVideo } = screen?.tracks;
-			console.log('[screen state]', screenVideo?.state);
-			if (screenVideo?.state === 'loading') {
-				dispatch('update-participants');
-			} else {
-				videoSrc = new MediaStream([screenVideo?.track]);
-				clearInterval(screenInterval);
-			}
-		}, INTERVAL_DELAY);
-	};
-
-	onMount(() => {
-		if (screen) {
-			/**
-			 * Render screen share video track.
-			 * We're not currently considering a possible screenAudioTrack.
-			 */
-			initializeScreen();
-		} else {
-			/**
-			 * Render the video and audio tracks for the participant.
-			 */
-			initializeTracks();
-		}
-	});
-
-	onDestroy(() => {
-		// Clean up leftover intervals _just_ in case
-		if (videoInterval) clearInterval(videoInterval);
-		if (audioInterval) clearInterval(audioInterval);
-		if (screenInterval) clearInterval(screenInterval);
-	});
 </script>
 
 <div class={screen ? 'video-tile screen' : 'video-tile'}>

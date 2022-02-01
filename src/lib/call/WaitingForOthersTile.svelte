@@ -38,5 +38,6 @@
 	p {
 		color: var(--white);
 		font-size: 0.75rem;
+		word-break: break-word;
 	}
 </style>

@@ -33,14 +33,6 @@
 		goto(`/`);
 	};
 
-	const currentParticipants = (e) => {
-		const particpantArr = Object.values(callObject.participants());
-		// Use most recent version of each participant
-		return particpantArr.map((p) =>
-			p?.session_id === e?.participant?.session_id ? e?.participant : p
-		);
-	};
-
 	const clearDeviceError = () => {
 		goHome();
 		deviceError = false;
@@ -52,14 +44,14 @@
 	const handleJoinedMeeting = (e) => {
 		console.log('[joined-meeting]', e);
 		loading = false;
-		if (!callObject) return;
-		participants = currentParticipants(e);
+		updateParticpants(e);
 	};
 	const updateParticpants = (e) => {
 		console.log('[update participants]', e);
 		if (!callObject) return;
 
-		participants = currentParticipants(e);
+		// Use call object as source of truth for current participant list
+		participants = Object.values(callObject.participants());
 	};
 	const handleError = async () => {
 		console.error('Error: ending call and returning to home page');

@@ -12,7 +12,6 @@
 	import { chatMessages, dailyErrorMessage, username } from '../../store';
 
 	let callObject;
-	let shareLink;
 	let participants = [];
 	let loading = true;
 	let deviceError = false;
@@ -22,9 +21,7 @@
 		if (callObject) {
 			await callObject.leave();
 			await callObject.destroy();
-			return;
 		}
-		return;
 	};
 
 	const goHome = async () => {
@@ -33,15 +30,6 @@
 		goto(`/`);
 	};
 
-	const currentParticipants = (e) => {
-		const particpantArr = Object.values(callObject.participants());
-		// Use most recent version of each participant
-		return particpantArr.map((p) =>
-			p?.session_id === e?.participant?.session_id ? e?.participant : p
-		);
-	};
-
-	const updateLoading = () => (loading = false);
 	const clearDeviceError = () => {
 		goHome();
 		deviceError = false;
@@ -53,14 +41,14 @@
 	const handleJoinedMeeting = (e) => {
 		console.log('[joined-meeting]', e);
 		loading = false;
-		if (!callObject) return;
-		participants = currentParticipants(e);
+		updateParticpants(e);
 	};
 	const updateParticpants = (e) => {
 		console.log('[update participants]', e);
 		if (!callObject) return;
 
-		participants = currentParticipants(e);
+		// Use call object as source of truth for current participant list
+		participants = Object.values(callObject.participants());
 	};
 	const handleError = async () => {
 		console.error('Error: ending call and returning to home page');
@@ -132,7 +120,6 @@
 
 	onDestroy(() => {
 		if (!callObject) return;
-		shareLink = null;
 		// Remove Daily event handling when call ends
 		callObject
 			.off('joining-meeting', updateParticpants)
@@ -146,11 +133,6 @@
 			.off('camera-error', handleDeviceError)
 			.off('app-message', handleAppMessage);
 	});
-	onMount(() => {
-		if (window) {
-			shareLink = window?.location;
-		}
-	});
 </script>
 
 <svelte:head>
@@ -162,9 +144,7 @@ there are any errors loading the call -->
 <div class="call-info">
 	<button on:click={goHome}>Home</button>
 
-	{#if shareLink}
-		<p>{shareLink}</p>
-	{/if}
+	<p>{$page.url.href}</p>
 </div>
 {#if loading}
 	<div class="loading">
@@ -177,12 +157,7 @@ there are any errors loading the call -->
 	{#if screensList?.length > 0}
 		<!-- Note: We'll only allow one screen share to be displayed
 		for this demo. Take the first one available -->
-		<VideoTile
-			{callObject}
-			screen={screensList[0]}
-			on:update-participants={updateParticpants}
-			on:loaded={updateLoading}
-		/>
+		<VideoTile {callObject} screen={screensList[0]} />
 	{/if}
 	<!-- This in-call view is _not_ optimized for large meetings.
 	Please see our large meetings series to learn more about 
@@ -192,13 +167,7 @@ there are any errors loading the call -->
 	<div class="call-container">
 		<!-- Render a video tile for each participant -->
 		{#each participants as participant}
-			<VideoTile
-				{callObject}
-				{participant}
-				{screensList}
-				on:update-participants={updateParticpants}
-				on:loaded={updateLoading}
-			/>
+			<VideoTile {callObject} {participant} {screensList} />
 		{/each}
 
 		<!-- Show a waiting message if the local user is alone in the call -->

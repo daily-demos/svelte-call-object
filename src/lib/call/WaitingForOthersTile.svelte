@@ -1,11 +1,11 @@
 <script>
-	let url = window.location;
+	import { page } from '$app/stores';
 </script>
 
 <div class="waiting-tile">
 	<h2>Waiting for others!</h2>
 	<h3>Invite someone by sharing this link:</h3>
-	<p>{url}</p>
+	<p>{$page.url.href}</p>
 </div>
 
 <style>
@@ -38,5 +38,6 @@
 	p {
 		color: var(--white);
 		font-size: 0.75rem;
+		word-break: break-word;
 	}
 </style>

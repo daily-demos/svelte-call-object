@@ -44,8 +44,10 @@
 			method: 'POST'
 		});
 		const data = await submit.json();
+		const DOMAIN = import.meta.env.VITE_DAILY_DOMAIN;
 
 		if (data.success && data?.room?.name) {
+			localStorage?.setItem('DAILY_SVELTE_URL', `https://${DOMAIN}.daily.co/${data?.room?.name}`);
 			goto(`/room/${data.room.name}`);
 			dailyErrorMessage.set('');
 		} else if (data.status === '400') {

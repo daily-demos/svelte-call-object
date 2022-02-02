@@ -12,7 +12,6 @@
 	import { chatMessages, dailyErrorMessage, username } from '../../store';
 
 	let callObject;
-	let shareLink;
 	let participants = [];
 	let loading = true;
 	let deviceError = false;
@@ -22,9 +21,7 @@
 		if (callObject) {
 			await callObject.leave();
 			await callObject.destroy();
-			return;
 		}
-		return;
 	};
 
 	const goHome = async () => {
@@ -123,7 +120,6 @@
 
 	onDestroy(() => {
 		if (!callObject) return;
-		shareLink = null;
 		// Remove Daily event handling when call ends
 		callObject
 			.off('joining-meeting', updateParticpants)
@@ -137,11 +133,6 @@
 			.off('camera-error', handleDeviceError)
 			.off('app-message', handleAppMessage);
 	});
-	onMount(() => {
-		if (window) {
-			shareLink = window?.location;
-		}
-	});
 </script>
 
 <svelte:head>
@@ -153,9 +144,7 @@ there are any errors loading the call -->
 <div class="call-info">
 	<button on:click={goHome}>Home</button>
 
-	{#if shareLink}
-		<p>{shareLink}</p>
-	{/if}
+	<p>{$page.url.href}</p>
 </div>
 {#if loading}
 	<div class="loading">

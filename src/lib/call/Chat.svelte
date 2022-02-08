@@ -1,4 +1,5 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { chatMessages } from '../../store';
@@ -6,9 +7,18 @@
 	import close from './assets/x.svg';
 	import send from './assets/send.svg';
 
+	const dispatch = createEventDispatcher();
+
 	export let callObject;
+	export let hasNewNotification;
 	let newText = '';
 	let chatIsOpen = false;
+
+	$: {
+		if (hasNewNotification && chatIsOpen) {
+			dispatch('clear-notification')
+		}
+	}
 
 	const sendMessage = () => {
 		if (!callObject) return;
@@ -28,12 +38,17 @@
 		// Clear input value
 		newText = '';
 	};
-	const toggleChat = () => (chatIsOpen = !chatIsOpen);
+	const toggleChat = () => {
+		chatIsOpen = !chatIsOpen;
+	};
 </script>
 
 <div class={chatIsOpen ? 'chat-open chat-container' : 'chat-close chat-container'}>
 	<!-- Show a button to toggle the chat in/out of view  -->
 	<div class="chat-view-button">
+		{#if hasNewNotification}
+			<span class="new-notification" />
+		{/if}
 		<button on:click={toggleChat}
 			>{#if chatIsOpen}
 				<img src={close} alt="Close chat" />
@@ -89,6 +104,35 @@
 		cursor: pointer;
 		border-radius: 16px 0 0 16px;
 		padding: 16px 14px 13px 18px;
+	}
+	.new-notification {
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: rgba(255, 82, 82, 1);
+		box-shadow: 0 0 0 0 rgb(255 82 82);
+		animation: s-o6uzu5d8T3ow-pulse-red 2s infinite;
+		border-radius: 50%;
+		margin: 6px;
+		height: 15px;
+		width: 15px;
+		transform: scale(1);
+	}
+	@keyframes pulse-red {
+		0% {
+			transform: scale(0.95);
+			box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+		}
+
+		70% {
+			transform: scale(1);
+			box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+		}
+
+		100% {
+			transform: scale(0.95);
+			box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+		}
 	}
 	.chat-open {
 		right: 0;

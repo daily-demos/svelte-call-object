@@ -15,7 +15,10 @@
 	let participants = [];
 	let loading = true;
 	let deviceError = false;
+	let hasNewNotification = false;
 	$: screensList = participants?.filter((p) => p?.screen);
+
+	const clearNotification = () => (hasNewNotification = false);
 
 	const destroyCall = async () => {
 		if (callObject) {
@@ -67,6 +70,7 @@
 		if (!e?.data?.name && !e?.data?.text) return;
 		// add chat message to message history
 		$chatMessages = [...$chatMessages, e?.data];
+		hasNewNotification = true;
 	};
 	/**
 	 * END - DAILY EVENT CALLBACKS
@@ -176,7 +180,7 @@ there are any errors loading the call -->
 		{/if}
 
 		<!-- Chat is displayed as soon as you're in the call  -->
-		<Chat {callObject} />
+		<Chat {callObject} {hasNewNotification} on:clear-notification={clearNotification} />
 	</div>
 {/if}
 

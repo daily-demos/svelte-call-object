@@ -16,7 +16,7 @@
 
 	$: {
 		if (hasNewNotification && chatIsOpen) {
-			dispatch('clear-notification')
+			dispatch('clear-notification');
 		}
 	}
 
@@ -38,9 +38,7 @@
 		// Clear input value
 		newText = '';
 	};
-	const toggleChat = () => {
-		chatIsOpen = !chatIsOpen;
-	};
+	const toggleChat = () => (chatIsOpen = !chatIsOpen);
 </script>
 
 <div class={chatIsOpen ? 'chat-open chat-container' : 'chat-close chat-container'}>
@@ -111,7 +109,7 @@
 		right: 0;
 		background: rgba(255, 82, 82, 1);
 		box-shadow: 0 0 0 0 rgb(255 82 82);
-		animation: s-o6uzu5d8T3ow-pulse-red 2s infinite;
+		animation: pulse-red 2s infinite;
 		border-radius: 50%;
 		margin: 6px;
 		height: 15px;

@@ -41,12 +41,14 @@
 	const toggleChat = () => (chatIsOpen = !chatIsOpen);
 </script>
 
+<!-- Chat wrapper including drawer and buttton to toggle drawer -->
 <div class={chatIsOpen ? 'chat-open chat-container' : 'chat-close chat-container'}>
-	<!-- Show a button to toggle the chat in/out of view  -->
 	<div class="chat-view-button">
+		<!-- overlay notification animation on chat button -->
 		{#if hasNewNotification}
 			<span class="new-notification" />
 		{/if}
+		<!-- Show a button to toggle the chat in/out of view  -->
 		<button on:click={toggleChat}
 			>{#if chatIsOpen}
 				<img src={close} alt="Close chat" />
@@ -69,7 +71,7 @@
 		<!-- Render a form for the local user to write and send a chat message -->
 		<form on:submit|preventDefault={sendMessage}>
 			<input type="text" placeholder="Type a message..." bind:value={newText} />
-			<button>
+			<button type="submit">
 				<img src={send} alt="send message" />
 			</button>
 		</form>

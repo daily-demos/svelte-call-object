@@ -21,10 +21,9 @@
 	const clearNotification = () => (hasNewNotification = false);
 
 	const destroyCall = async () => {
-		if (callObject) {
-			await callObject.leave();
-			await callObject.destroy();
-		}
+		if (!callObject) return;
+		await callObject.leave();
+		await callObject.destroy();
 	};
 
 	const goHome = async () => {
@@ -112,14 +111,12 @@
 	};
 
 	onMount(() => {
-		if (browser) {
-			createAndJoinCall();
-		}
+		if (!browser) return;
+		createAndJoinCall();
 
 		// updates background colour
-		if (document) {
-			document?.body?.classList?.add('in-call');
-		}
+		if (!document) return;
+		document.body.classList.add('in-call');
 	});
 
 	onDestroy(() => {

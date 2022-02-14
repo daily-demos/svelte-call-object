@@ -19,11 +19,11 @@
 
 		// In either case, we wait until the track is playable and then only
 		// set it once to avoid rerendering it
-		if (!screen && videoTrack?.state === 'playable' && !videoTrackSet) {
-			videoSrc = new MediaStream([videoTrack?.persistentTrack]);
+		if (!screen && videoTrack.state === 'playable' && !videoTrackSet) {
+			videoSrc = new MediaStream([videoTrack.persistentTrack]);
 			videoTrackSet = true;
-		} else if (screen && screenTrack?.state === 'playable' && !videoTrackSet) {
-			videoSrc = new MediaStream([screenTrack?.track]);
+		} else if (screen && screenTrack.state === 'playable' && !videoTrackSet) {
+			videoSrc = new MediaStream([screenTrack.track]);
 			videoTrackSet = true;
 		}
 	}
@@ -33,9 +33,9 @@
 	$: audioTrack = participant?.tracks?.audio;
 	$: {
 		// Wait until the track is playable and then only set it once to avoid rerendering it
-		if (audioTrack?.state === 'playable' && !audioTrackSet) {
+		if (audioTrack.state === 'playable' && !audioTrackSet) {
 			// Use persistentTrack to avoid issues in Safari
-			audioSrc = new MediaStream([audioTrack?.persistentTrack]);
+			audioSrc = new MediaStream([audioTrack.persistentTrack]);
 			audioTrackSet = true;
 		}
 	}

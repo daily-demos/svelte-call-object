@@ -41,7 +41,7 @@
 	const toggleChat = () => (chatIsOpen = !chatIsOpen);
 </script>
 
-<!-- Chat wrapper including drawer and buttton to toggle drawer -->
+<!-- Chat wrapper including drawer and button to toggle drawer -->
 <div class={chatIsOpen ? 'chat-open chat-container' : 'chat-close chat-container'}>
 	<div class="chat-view-button">
 		<!-- overlay notification animation on chat button -->

@@ -59,8 +59,8 @@
 
 	onMount(() => {
 		if (!callObject) return;
-		camOn = callObject?.localVideo();
-		micOn = callObject?.localAudio();
+		camOn = callObject.localVideo();
+		micOn = callObject.localAudio();
 	});
 </script>
 

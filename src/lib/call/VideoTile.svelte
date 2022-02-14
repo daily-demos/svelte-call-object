@@ -20,10 +20,10 @@
 		// In either case, we wait until the track is playable and then only
 		// set it once to avoid rerendering it
 		if (!screen && videoTrack.state === 'playable' && !videoTrackSet) {
-			videoSrc = new MediaStream([videoTrack?.persistentTrack]);
+			videoSrc = new MediaStream([videoTrack.persistentTrack]);
 			videoTrackSet = true;
 		} else if (screen && screenTrack.state === 'playable' && !videoTrackSet) {
-			videoSrc = new MediaStream([screenTrack?.track]);
+			videoSrc = new MediaStream([screenTrack.track]);
 			videoTrackSet = true;
 		}
 	}

@@ -66,8 +66,8 @@
 <form on:submit|preventDefault={submitForm}>
 	<label for="name">Your name</label>
 	<input id="name" type="text" bind:value={dailyName} required />
-	<label for="url">Daily URL (leave empty to create a new room)</label>
-	<input id="url" type="text" bind:value={dailyUrl} />
+	<!-- <label for="url">Daily URL (leave empty to create a new room)</label>
+	<input id="url" type="text" bind:value={dailyUrl} /> -->
 	<input type="submit" value={!dailyUrl ? 'Create room' : 'Join call'} />
 </form>
 {#if $dailyErrorMessage}
@@ -86,12 +86,23 @@
 		width: 100%;
 	}
 	input[type='submit'] {
-		margin: 1rem auto 0;
-		width: 100px;
-		font-size: 12px;
-		background-color: var(--turquoise);
-		font-weight: 700;
+		background-image: linear-gradient(to right, #da22ff 0%, #9733ee 51%, #da22ff 100%);
+		margin: 2rem 1rem;
+		padding: 15px 45px;
+		text-align: center;
+		text-transform: uppercase;
+		transition: 0.5s;
+		background-size: 200% auto;
+		color: white;
+		box-shadow: 0 0 20px #eee;
+		border-radius: 10px;
+		display: block;
 		cursor: pointer;
+	}
+	input[type='submit']:hover {
+		background-position: right center; /* change the direction of the change here */
+		color: #fff;
+		text-decoration: none;
 	}
 	.error-message {
 		color: var(--red);

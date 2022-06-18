@@ -11,8 +11,8 @@
 </sveltekit:head>
 
 <section>
-	<h1>Call object Svelte demo</h1>
-	<p>Demo a custom call interface built using Daily call object for Svelte.</p>
+	<h1>Connect with your customers through video call</h1>
+	<p>Join a group video call to discuss about the product</p>
 
 	<!-- Provide a form to enter name and optional Daily URL -->
 	<RoomForm />

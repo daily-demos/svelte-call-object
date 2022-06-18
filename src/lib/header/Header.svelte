@@ -1,6 +1,5 @@
 <script>
 	import logo from './assets/logo.svg';
-	import svelteLogo from './assets/svelte-logo.svg';
 	import githubLogo from './assets/github.svg';
 	import newTab from './assets/newtab.svg';
 </script>
@@ -8,31 +7,30 @@
 <header>
 	<div class="wrapper">
 		<div class="corner left">
-			<a href="https://daily.co" target="_blank" rel="noreferrer noopenner">
-				<img src={logo} alt="Daily" />
+			<a href="https://misiki.in" target="_blank" rel="noreferrer noopenner">
+				<img src={logo} alt="Misiki" />
 			</a>
-			<img src={svelteLogo} alt="Svelte logo" />
-			<span>Call object Svelte demo</span>
+			<!-- <img src={svelteLogo} alt="Misiki logo" /> -->
 		</div>
 
 		<div class="corner right">
-			<a
-				href="https://docs.daily.co/reference/daily-js"
+			<!-- <a
+				href="https://docs.misiki.in/reference/daily-js"
 				class="buttonish"
 				target="_blank"
 				rel="noreferrer noopenner"
 			>
 				<span>API docs</span>
 				<img src={newTab} class="small" alt="Daily docs" />
-			</a>
-			<a
+			</a> -->
+			<!-- <a
 				href="https://github.com/daily-demos/svelte-call-object"
 				target="_blank"
 				class="plain-link"
 				rel="noreferrer noopenner"
 			>
 				<img src={githubLogo} alt="Daily demos Github" />
-			</a>
+			</a> -->
 		</div>
 	</div>
 </header>

@@ -136,9 +136,9 @@
 	});
 </script>
 
-<svelte:head>
+<sveltekit:head>
 	<title>Daily call</title>
-</svelte:head>
+</sveltekit:head>
 
 <!-- Include a button to return to the home screen in case 
 there are any errors loading the call -->

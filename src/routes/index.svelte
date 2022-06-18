@@ -6,9 +6,9 @@
 	import RoomForm from '$lib/forms/RoomForm.svelte';
 </script>
 
-<svelte:head>
+<sveltekit:head>
 	<title>Daily Svelte demo</title>
-</svelte:head>
+</sveltekit:head>
 
 <section>
 	<h1>Call object Svelte demo</h1>

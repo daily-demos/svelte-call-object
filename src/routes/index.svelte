@@ -7,7 +7,7 @@
 </script>
 
 <sveltekit:head>
-	<title>Daily Svelte demo</title>
+	<title>Misiki Live</title>
 </sveltekit:head>
 
 <section>

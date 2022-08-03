@@ -42,9 +42,6 @@ After cloning this repo, run the following commands from the project's root dire
 ```bash
 npm i
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
 Visit `http://localhost:3000` to view the app locally.

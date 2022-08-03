@@ -22,7 +22,13 @@
 		if (browser) {
 			browserSupport = daily?.supportedBrowser();
 		}
+		setLocalDevices();
 	});
+	const setLocalDevices = () => {
+		if (!callObject) return;
+		camOn = callObject.localVideo();
+		micOn = callObject.localAudio();
+	};
 	const toggleVideo = () => {
 		if (!callObject) return;
 		const currentVid = callObject.localVideo();
@@ -56,12 +62,6 @@
 		document?.body?.classList?.remove('in-call');
 		goto(`/`);
 	};
-
-	onMount(() => {
-		if (!callObject) return;
-		camOn = callObject.localVideo();
-		micOn = callObject.localAudio();
-	});
 </script>
 
 <div class="controls-container">

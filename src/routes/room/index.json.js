@@ -1,4 +1,4 @@
-export async function post() {
+export async function POST() {
 	/**
 	 * Note: You must at your Daily API key to an .env file
 	 * for this request to work. Refer to the README for

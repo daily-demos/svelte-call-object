@@ -44,7 +44,7 @@ npm i
 npm run dev
 ```
 
-Visit `http://localhost:3000` to view the app locally.
+Visit `http://localhost:5173` to view the app locally.
 
 ---
 

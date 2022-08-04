@@ -5,7 +5,7 @@ This project demonstrates how to build a custom video call with Daily's custom [
 _Note: This demo has not been optimized for large calls. Please review our [large meeting guide](https://docs.daily.co/guides/how-daily-works/scaling-applications-to-support-large-calls) for more information or [contact us](https://www.daily.co/contact/support) for help getting your app production-ready._
 
 <img src="home.png" alt="Demo home screen" style="max-width:600px;">
-
+<img src="in-call.png" alt="Demo in-call view with one participant" style="max-width:600px;">
 ---
 
 ## Getting set up with Daily
@@ -42,12 +42,9 @@ After cloning this repo, run the following commands from the project's root dire
 ```bash
 npm i
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-Visit `http://localhost:3000` to view the app locally.
+Visit `http://localhost:5173` to view the app locally.
 
 ---
 

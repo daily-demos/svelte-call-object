@@ -33,7 +33,7 @@
 	$: audioTrack = participant?.tracks?.audio;
 	$: {
 		// Wait until the track is playable and then only set it once to avoid rerendering it
-		if (audioTrack.state === 'playable' && !audioTrackSet) {
+		if (audioTrack?.state === 'playable' && !audioTrackSet) {
 			// Use persistentTrack to avoid issues in Safari
 			audioSrc = new MediaStream([audioTrack.persistentTrack]);
 			audioTrackSet = true;
